@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fonctions Linéaires - Cours de Maths 3ème</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #06b6d4;
+            --accent-color: #f59e0b;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
+            --success-color: #10b981;
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .cta-button {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .price-tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 2rem;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        /* Content Sections */
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section:nth-child(even) {
+            background: white;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--border-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            background: var(--gradient);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table th {
+            background: var(--gradient);
+            color: white;
+            font-weight: 600;
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table tr:hover {
+            background: var(--bg-light);
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .formula-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            transform: skewY(-6deg);
+        }
+
+        .formula-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .formula {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 1rem 0;
+        }
+
+        /* Graph Container */
+        .graph-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .graph {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        /* Example Box */
+        .example-box {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 2rem 0;
+        }
+
+        .example-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Steps */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .step-number {
+            background: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 3rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .section {
+                padding: 2rem 0;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Interactive Elements */
+        .highlight {
+            background: linear-gradient(120deg, var(--accent-color), transparent 70%);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted var(--primary-color);
+        }
+
+        .coefficient-badge {
+            background: var(--success-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-block;
+            margin: 0 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Fonctions Linéaires</h1>
+            <p>Découvrez les fonctions linéaires de manière interactive et visuelle</p>
+            <div class="price-tag">
+                <i class="fas fa-star"></i>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Introduction -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Objectifs du cours</h2>
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-target"></i>
+                        </div>
+                        <h3 class="card-title">Ce que vous allez apprendre</h3>
+                    </div>
+                    <p>Ce cours a pour objectif de faire manipuler le vocabulaire relatif aux fonctions et de travailler sur la détermination et la représentation graphique d'une fonction linéaire.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activité Proportionnalité -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="fas fa-exchange-alt"></i>
+                    Activité : Proportionnalité
+                </h2>
+                
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <h3 class="card-title">Voyage en Floride</h3>
+                    </div>
+                    <p>Mr Martin désire partir en Floride pour ses vacances. Avec sa famille, il se rend à la banque pour échanger leurs euros en dollars.</p>
+                </div>
+
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Euros (€)</th>
+                                <th>10</th>
+                                <th>20</th>
+                                <th>50</th>
+                                <th>100</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Dollars ($)</strong></td>
+                                <td>13</td>
+                                <td>26</td>
+                                <td>65</td>
+                                <td>130</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div>
+                            <h4>Vérification de la proportionnalité</h4>
+                            <p>Calculons les quotients : 13÷10 = 1,3 | 26÷20 = 1,3 | 65÷50 = 1,3 | 130÷100 = 1,3</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div>
+                            <h4>Conclusion</h4>
+                            <p>Tous les quotients sont identiques : <span class="coefficient-badge">1,3</span></p>
+                            <p>C'est donc un tableau de proportionnalité avec pour coefficient <strong>1,3</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notion de fonction linéaire -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="fas fa-function"></i>
+                    Notion de fonction linéaire
+                </h2>
+
+                <div class="card fade-in">
+                    <p>On exprime la somme en dollars en multipliant la somme en euros par le nombre <span class="highlight">1,3</span></p>
+                    
+                    <div class="formula-box">
+                        <div class="formula-content">
+                            <h3>Programme de calcul</h3>
+                            <div class="formula">x → 1,3 × x</div>
+                            <p>Je multiplie le nombre x par 1,3</p>
+                        </div>
+                    </div>
+
+                    <p>Ce procédé s'appelle la <strong>fonction linéaire de coefficient 1,3</strong>.</p>
+                    <p>Il est associé à une situation de proportionnalité de coefficient 1,3.</p>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">
+                        <i class="fas fa-lightbulb"></i>
+                        Notation mathématique
+                    </div>
+                    <p>Si on appelle <strong>f</strong> la fonction, on note :</p>
+                    <div class="formula">f : x → 1,3x</div>
+                    <div class="formula">f(x) = 1,3x</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Définitions -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="fas fa-book"></i>
+                    Définitions et notations
+                </h2>
+
+                <div class="grid">
+                    <div class="card fade-in">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-equals"></i>
+                            </div>
+                            <h3 class="card-title">Définition générale</h3>
+                        </div>
+                        <p>Soit <strong>a</strong> un nombre fixé.</p>
+                        <p>En associant à chaque nombre « x » un nombre « ax » appelé image de x, on définit une <strong>fonction linéaire de coefficient a</strong>.</p>
+                        <div class="formula-box">
+                            <div class="formula-content">
+                                <div class="formula">f : x → ax</div>
+                                <p>L'image de x sera notée f(x)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card fade-in">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <h3 class="card-title">Remarque importante</h3>
+                        </div>
+                        <p>La fonction linéaire f traduit une <strong>situation de proportionnalité</strong>, et le nombre a est appelé le <strong>coefficient de proportionnalité</strong>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Exemples -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="fas fa-calculator"></i>
+                    Exemples pratiques
+                </h2>
+
+                <div class="card fade-in">
+                    <div class="example-box">
+                        <div class="example-title">
+                            <i class="fas fa-example"></i>
+                            Exemple 1
+                        </div>
+                        <p>Soit f la fonction linéaire de coefficient 2. On la note <strong>f : x → 2x</strong></p>
+                        <ul style="margin-left: 2rem; margin-top: 1rem;">
+                            <li>L'image de 5 est f(5) = 2 × 5 = <span class="coefficient-badge">10</span></li>
+                            <li>L'image de (-3) est f(-3) = 2 × (-3) = <span class="coefficient-badge">-6</span></li>
+                            <li>Le nombre qui a pour image 8 par f est x = 8 ÷ 2 = <span class="coefficient-badge">4</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="table-container" style="margin-top: 2rem;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>x</th>
+                                    <th>-3</th>
+                                    <th>-1</th>
+                                    <th>0</th>
+                                    <th>4</th>
+                                    <th>5</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>f(x) = 2x</strong></td>
+                                    <td>-6</td>
+                                    <td>-2</td>
+                                    <td>0</td>
+                                    <td>8</td>
+                                    <td>10</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card fade-in" style="margin-top: 2rem;">
+                    <div class="example-box">
+                        <div class="example-title">
+                            <i class="fas fa-search"></i>
+                            Exemple 2 : Trouver le coefficient
+                        </div>
+                        <p>Soit g la fonction linéaire telle que g(7) = -21. Quel est le coefficient de g ?</p>
+                        
+                        <div class="steps" style="margin-top: 1rem;">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div>
+                                    <p>On sait que g : x → ax, donc g(7) = 7a</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div>
+                                    <p>Puisque g(7) = -21, on a : 7a = -21</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div>
+                                    <p>Donc a = -21 ÷ 7 = <span class="coefficient-badge">-3</span></p>
+                                    <p>La fonction g est : <strong>g : x → -3x</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Représentation graphique -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    Représentation graphique
+                </h2>
+
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-graph"></i>
+                        </div>
+                        <h3 class="card-title">Propriété fondamentale</h3>
+                    </div>
+                    <p>La représentation graphique d'une fonction linéaire f : x → ax est une <strong>droite passant par l'origine</strong> et d'équation y = ax.</p>
+                </div>
+
+                <div class="graph-container">
+                    <h3>Graphique de f : x → 2x</h3>
+                    <svg class="graph" width="500" height="400" viewBox="0 0 500 400">
+                        <!-- Grille -->
+                        <defs>
+                            <pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse">
+                                <path d="M 25 0 L 0 0 0 25" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#grid)" />
+                        
+                        <!-- Axes -->
+                        <line x1="50" y1="350" x2="450" y2="350" stroke="#374151" stroke-width="2"/>
+                        <line x1="250" y1="50" x2="250" y2="350" stroke="#374151" stroke-width="2"/>
+                        
+                        <!-- Flèches -->
+                        <polygon points="450,350 445,345 445,355" fill="#374151"/>
+                        <polygon points="250,50 245,55 255,55" fill="#374151"/>
+                        
+                        <!-- Labels des axes -->
+                        <text x="460" y="355" font-family="Inter" font-size="14" fill="#374151">x</text>
+                        <text x="255" y="45" font-family="Inter" font-size="14" fill="#374151">y</text>
+                        <text x="255" y="370" font-family="Inter" font-size="12" fill="#6b7280">O</text>
+                        
+                        <!-- Droite f(x) = 2x -->
+                        <line x1="200" y1="250" x2="300" y2="150" stroke="#2563eb" stroke-width="3"/>
+                        
+                        <!-- Points remarquables -->
+                        <circle cx="250" cy="350" r="4" fill="#ef4444"/>
+                        <circle cx="275" cy="300" r="4" fill="#ef4444"/>
+                        <circle cx="300" cy="250" r="4" fill="#ef4444"/>
+                        
+                        <!-- Labels des points -->
+                        <text x="255" y="345" font-family="Inter" font-size="12" fill="#ef4444">O(0;0)</text>
+                        <text x="280" y="295" font-family="Inter" font-size="12" fill="#ef4444">A(1;2)</text>
+                        <text x="305" y="245" font-family="Inter" font-size="12" fill="#ef4444">B(2;4)</text>
+                        
+                        <!-- Équation de la droite -->
+                        <text x="320" y="180" font-family="Inter" font-size="16" font-weight="600" fill="#2563eb">y = 2x</text>
+                    </svg>
+                    <p style="margin-top: 1rem; color: var(--text-light);">
+                        La droite passe par l'origine O(0;0) et par le point (1;2)
+                    </p>
+                </div>
+
+                <div class="formula-box">
+                    <div class="formula-content">
+                        <h3>Règle de construction</h3>
+                        <p>Pour construire la représentation graphique d'une fonction linéaire f : x → ax :</p>
+                        <div class="formula">Il suffit de connaître un point (x ; f(x))</div>
+                        <p>Le coefficient <strong>a</strong> est appelé le <strong>coefficient directeur</strong> de la droite</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-graduation-cap"></i> EducastStream</h3>
+                    <p>Plateforme de soutien scolaire en ligne pour réussir vos études de mathématiques.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Nos cours</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Cours maths 3ème</a></li>
+                        <li><a href="#">Fonctions linéaires</a></li>
+                        <li><a href="#">Géométrie</a></li>
+                        <li><a href="#">Statistiques</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Ressources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Exercices d'anglais</a></li>
+                        <li><a href="#">Ressources pédagogiques</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Suivez-nous</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2023 Educastream. Tous droits réservés. | Charte Déontologie CPF | <i class="fas fa-award"></i> Certifié Qualiopi</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animation au scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Smooth scroll pour les liens de navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Animation des coefficients
+        document.querySelectorAll('.coefficient-badge').forEach(badge => {
+            badge.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+            
+            badge.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
