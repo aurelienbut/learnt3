@@ -3,870 +3,530 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fonctions Linéaires - Cours de Maths 3ème</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Visualisation Réseau de Neurones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #06b6d4;
-            --accent-color: #f59e0b;
-            --text-dark: #1f2937;
-            --text-light: #6b7280;
-            --bg-light: #f8fafc;
-            --bg-card: #ffffff;
-            --border-color: #e5e7eb;
-            --success-color: #10b981;
-            --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        }
-
-        * {
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
             margin: 0;
-            padding: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Aligner en haut pour les longs contenus */
+            min-height: 100vh;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background-color: var(--bg-light);
-        }
-
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        .header {
-            background: var(--gradient);
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-            margin: 0;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            transition: opacity 0.3s;
-        }
-
-        .nav-links a:hover {
-            opacity: 0.8;
-        }
-
-        .cta-button {
-            background: var(--accent-color);
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 0.5rem;
-            text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.3s;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: var(--gradient);
-            color: white;
-            padding: 4rem 0;
+            background-color: #ffffff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 900px;
             text-align: center;
         }
 
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease-out;
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            animation: fadeInUp 1s ease-out 0.2s both;
+        .intro-text {
+            color: #555;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+            line-height: 1.6;
         }
 
-        .price-tag {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 1rem 2rem;
-            border-radius: 2rem;
+        .neural-network-visualization {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 30px;
+            position: relative; /* Pour le SVG */
+            min-height: 300px; /* Hauteur minimale pour l'espacement */
+        }
+
+        .layer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            min-width: 120px; /* Largeur minimale pour chaque couche */
+        }
+
+        .layer h2 {
+            font-size: 1em;
+            color: #3498db;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .neuron-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .neuron-group label {
+            font-size: 0.8em;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .input-slider {
+            width: 100px;
+            margin-bottom: 5px;
+        }
+
+        .value-display {
+            font-size: 0.8em;
+            color: #333;
+            min-width: 25px; /* Pour éviter les sauts de layout */
             display: inline-block;
-            backdrop-filter: blur(10px);
-            animation: fadeInUp 1s ease-out 0.4s both;
+            margin-bottom: 8px;
         }
 
-        /* Content Sections */
-        .section {
-            padding: 4rem 0;
-        }
-
-        .section:nth-child(even) {
-            background: white;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 3rem;
-            color: var(--primary-color);
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: var(--accent-color);
-            border-radius: 2px;
-        }
-
-        /* Cards */
-        .card {
-            background: var(--bg-card);
-            border-radius: 1rem;
-            padding: 2rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid var(--border-color);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-icon {
-            background: var(--gradient);
-            color: white;
+        .neuron {
             width: 50px;
             height: 50px;
+            background-color: #e0e0e0;
+            border: 2px solid #bdc3c7;
             border-radius: 50%;
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            align-items: center;
+            font-weight: bold;
+            color: #555;
+            margin: 10px 0;
+            transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+            position: relative; /* Pour z-index au-dessus des lignes */
+            z-index: 2;
         }
 
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        /* Table Styles */
-        .table-container {
-            overflow-x: auto;
-            margin: 2rem 0;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 0.5rem;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .table th,
-        .table td {
-            padding: 1rem;
-            text-align: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .table th {
-            background: var(--gradient);
+        .neuron.active {
+            background-color: #3498db; /* Bleu pour actif */
             color: white;
-            font-weight: 600;
+            border-color: #2980b9;
+            transform: scale(1.1);
         }
 
-        .table tr:last-child td {
-            border-bottom: none;
+        .neuron.processing {
+            background-color: #f1c40f; /* Jaune pour en traitement */
+            color: #333;
+            border-color: #f39c12;
         }
 
-        .table tr:hover {
-            background: var(--bg-light);
-        }
-
-        /* Formula Box */
-        .formula-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            margin: 2rem 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .formula-box::before {
-            content: '';
+        .connections-svg {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.1);
-            transform: skewY(-6deg);
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Derrière les neurones */
+            pointer-events: none; /* Pour ne pas intercepter les clics */
         }
 
-        .formula-content {
-            position: relative;
-            z-index: 1;
+        .connections-svg line {
+            stroke: #bdc3c7;
+            stroke-width: 2;
+            transition: stroke 0.3s ease, stroke-width 0.3s ease;
         }
 
-        .formula {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 1rem 0;
+        .connections-svg line.active {
+            stroke: #2c3e50; /* Couleur foncée pour connexion active */
         }
 
-        /* Graph Container */
-        .graph-container {
-            background: white;
-            border-radius: 1rem;
-            padding: 2rem;
-            margin: 2rem 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .graph {
-            max-width: 100%;
-            height: auto;
-        }
-
-        /* Grid Layout */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        /* Example Box */
-        .example-box {
-            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+        #run-simulation {
+            background-color: #2ecc71;
             color: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            margin: 2rem 0;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            margin-bottom: 20px;
         }
 
-        .example-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        #run-simulation:hover {
+            background-color: #27ae60;
+        }
+        #run-simulation:active {
+            transform: scale(0.98);
         }
 
-        /* Steps */
-        .steps {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin: 2rem 0;
+        .output-value-display {
+            margin-top: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #e74c3c;
+            min-height: 30px; /* Pour éviter les sauts */
         }
 
-        .step {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 1.5rem;
-            background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-left: 4px solid var(--primary-color);
+        .explanation-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: #444;
+        }
+        .explanation-box h3 {
+            margin-top: 0;
+            color: #2c3e50;
         }
 
-        .step-number {
-            background: var(--primary-color);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
 
-        /* Footer */
-        .footer {
-            background: var(--text-dark);
-            color: white;
-            padding: 3rem 0 2rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            color: var(--secondary-color);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-links a {
-            color: #d1d5db;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--secondary-color);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid #374151;
-            color: #9ca3af;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in {
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        /* Responsive Design */
+        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .nav {
+            .neural-network-visualization {
                 flex-direction: column;
-                gap: 1rem;
+                align-items: stretch; /* Étire les couches */
             }
-
-            .nav-links {
-                gap: 1rem;
+            .layer {
+                margin-bottom: 20px;
+                width: auto; /* Prend la largeur disponible */
             }
-
-            .section {
-                padding: 2rem 0;
+            .layer:last-child {
+                margin-bottom: 0;
             }
-
-            .section-title {
-                font-size: 2rem;
+            /* Le SVG devra être recalculé en JS pour le mode colonne,
+               ou on accepte des lignes moins directes.
+               Pour cette démo, on le laisse tel quel,
+               mais une solution avancée recalculerait les positions. */
+            .neuron-group {
+                flex-direction: row; /* Inputs en ligne sur mobile */
+                align-items: center;
+                justify-content: space-around;
+                width: 100%;
             }
-
-            .card {
-                padding: 1.5rem;
+            .neuron-group label {
+                margin-bottom: 0;
+                margin-right: 5px;
             }
         }
 
-        /* Interactive Elements */
-        .highlight {
-            background: linear-gradient(120deg, var(--accent-color), transparent 70%);
-            padding: 0.2rem 0.4rem;
-            border-radius: 0.25rem;
-        }
-
-        .tooltip {
-            position: relative;
-            cursor: help;
-            border-bottom: 1px dotted var(--primary-color);
-        }
-
-        .coefficient-badge {
-            background: var(--success-color);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            display: inline-block;
-            margin: 0 0.25rem;
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            .neuron {
+                width: 40px;
+                height: 40px;
+                font-size: 0.8em;
+            }
+            .input-slider {
+                width: 80px;
+            }
         }
     </style>
 </head>
 <body>
-    
+    <div class="container">
+        <h1>Réseau de Neurones Simplifié</h1>
+        <p class="intro-text">Modifiez les entrées et observez comment les signaux se propagent à travers le réseau pour produire une sortie. Les connexions plus épaisses/foncées indiquent un poids plus fort.</p>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Fonctions Linéaires</h1>
-            <p>Découvrez les fonctions linéaires de manière interactive et visuelle</p>
-            <div class="price-tag">
-                <i class="fas fa-star"></i>
-                
+        <div class="neural-network-visualization">
+            <!-- Couche d'Entrée -->
+            <div class="layer input-layer">
+                <h2>Entrées</h2>
+                <div class="neuron-group">
+                    <label for="input1">Input 1:</label>
+                    <input type="range" id="input1" class="input-slider" min="0" max="1" step="0.1" value="0.5">
+                    <span class="value-display" id="input1-value">0.5</span>
+                    <div class="neuron" id="n-i1">I1</div>
+                </div>
+                <div class="neuron-group">
+                    <label for="input2">Input 2:</label>
+                    <input type="range" id="input2" class="input-slider" min="0" max="1" step="0.1" value="0.8">
+                    <span class="value-display" id="input2-value">0.8</span>
+                    <div class="neuron" id="n-i2">I2</div>
+                </div>
+            </div>
+
+            <!-- SVG pour les connexions -->
+            <svg class="connections-svg"></svg>
+
+            <!-- Couche Cachée -->
+            <div class="layer hidden-layer">
+                <h2>Couche Cachée</h2>
+                <div class="neuron" id="n-h1">H1</div>
+                <div class="neuron" id="n-h2">H2</div>
+                <div class="neuron" id="n-h3">H3</div>
+            </div>
+
+            <!-- Couche de Sortie -->
+            <div class="layer output-layer">
+                <h2>Sortie</h2>
+                <div class="neuron" id="n-o1">O1</div>
+                <div class="output-value-display" id="output-value">?</div>
             </div>
         </div>
-    </section>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Introduction -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">Objectifs du cours</h2>
-                <div class="card fade-in">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="fas fa-target"></i>
-                        </div>
-                        <h3 class="card-title">Ce que vous allez apprendre</h3>
-                    </div>
-                    <p>Ce cours a pour objectif de faire manipuler le vocabulaire relatif aux fonctions et de travailler sur la détermination et la représentation graphique d'une fonction linéaire.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Activité Proportionnalité -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">
-                    <i class="fas fa-exchange-alt"></i>
-                    Activité : Proportionnalité
-                </h2>
-                
-                <div class="card fade-in">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="fas fa-plane"></i>
-                        </div>
-                        <h3 class="card-title">Voyage en Floride</h3>
-                    </div>
-                    <p>Mr Martin désire partir en Floride pour ses vacances. Avec sa famille, il se rend à la banque pour échanger leurs euros en dollars.</p>
-                </div>
-
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Euros (€)</th>
-                                <th>10</th>
-                                <th>20</th>
-                                <th>50</th>
-                                <th>100</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Dollars ($)</strong></td>
-                                <td>13</td>
-                                <td>26</td>
-                                <td>65</td>
-                                <td>130</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div>
-                            <h4>Vérification de la proportionnalité</h4>
-                            <p>Calculons les quotients : 13÷10 = 1,3 | 26÷20 = 1,3 | 65÷50 = 1,3 | 130÷100 = 1,3</p>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div>
-                            <h4>Conclusion</h4>
-                            <p>Tous les quotients sont identiques : <span class="coefficient-badge">1,3</span></p>
-                            <p>C'est donc un tableau de proportionnalité avec pour coefficient <strong>1,3</strong></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Notion de fonction linéaire -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">
-                    <i class="fas fa-function"></i>
-                    Notion de fonction linéaire
-                </h2>
-
-                <div class="card fade-in">
-                    <p>On exprime la somme en dollars en multipliant la somme en euros par le nombre <span class="highlight">1,3</span></p>
-                    
-                    <div class="formula-box">
-                        <div class="formula-content">
-                            <h3>Programme de calcul</h3>
-                            <div class="formula">x → 1,3 × x</div>
-                            <p>Je multiplie le nombre x par 1,3</p>
-                        </div>
-                    </div>
-
-                    <p>Ce procédé s'appelle la <strong>fonction linéaire de coefficient 1,3</strong>.</p>
-                    <p>Il est associé à une situation de proportionnalité de coefficient 1,3.</p>
-                </div>
-
-                <div class="example-box">
-                    <div class="example-title">
-                        <i class="fas fa-lightbulb"></i>
-                        Notation mathématique
-                    </div>
-                    <p>Si on appelle <strong>f</strong> la fonction, on note :</p>
-                    <div class="formula">f : x → 1,3x</div>
-                    <div class="formula">f(x) = 1,3x</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Définitions -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">
-                    <i class="fas fa-book"></i>
-                    Définitions et notations
-                </h2>
-
-                <div class="grid">
-                    <div class="card fade-in">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-equals"></i>
-                            </div>
-                            <h3 class="card-title">Définition générale</h3>
-                        </div>
-                        <p>Soit <strong>a</strong> un nombre fixé.</p>
-                        <p>En associant à chaque nombre « x » un nombre « ax » appelé image de x, on définit une <strong>fonction linéaire de coefficient a</strong>.</p>
-                        <div class="formula-box">
-                            <div class="formula-content">
-                                <div class="formula">f : x → ax</div>
-                                <p>L'image de x sera notée f(x)</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card fade-in">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-info-circle"></i>
-                            </div>
-                            <h3 class="card-title">Remarque importante</h3>
-                        </div>
-                        <p>La fonction linéaire f traduit une <strong>situation de proportionnalité</strong>, et le nombre a est appelé le <strong>coefficient de proportionnalité</strong>.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Exemples -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">
-                    <i class="fas fa-calculator"></i>
-                    Exemples pratiques
-                </h2>
-
-                <div class="card fade-in">
-                    <div class="example-box">
-                        <div class="example-title">
-                            <i class="fas fa-example"></i>
-                            Exemple 1
-                        </div>
-                        <p>Soit f la fonction linéaire de coefficient 2. On la note <strong>f : x → 2x</strong></p>
-                        <ul style="margin-left: 2rem; margin-top: 1rem;">
-                            <li>L'image de 5 est f(5) = 2 × 5 = <span class="coefficient-badge">10</span></li>
-                            <li>L'image de (-3) est f(-3) = 2 × (-3) = <span class="coefficient-badge">-6</span></li>
-                            <li>Le nombre qui a pour image 8 par f est x = 8 ÷ 2 = <span class="coefficient-badge">4</span></li>
-                        </ul>
-                    </div>
-
-                    <div class="table-container" style="margin-top: 2rem;">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>x</th>
-                                    <th>-3</th>
-                                    <th>-1</th>
-                                    <th>0</th>
-                                    <th>4</th>
-                                    <th>5</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>f(x) = 2x</strong></td>
-                                    <td>-6</td>
-                                    <td>-2</td>
-                                    <td>0</td>
-                                    <td>8</td>
-                                    <td>10</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="card fade-in" style="margin-top: 2rem;">
-                    <div class="example-box">
-                        <div class="example-title">
-                            <i class="fas fa-search"></i>
-                            Exemple 2 : Trouver le coefficient
-                        </div>
-                        <p>Soit g la fonction linéaire telle que g(7) = -21. Quel est le coefficient de g ?</p>
-                        
-                        <div class="steps" style="margin-top: 1rem;">
-                            <div class="step">
-                                <div class="step-number">1</div>
-                                <div>
-                                    <p>On sait que g : x → ax, donc g(7) = 7a</p>
-                                </div>
-                            </div>
-                            <div class="step">
-                                <div class="step-number">2</div>
-                                <div>
-                                    <p>Puisque g(7) = -21, on a : 7a = -21</p>
-                                </div>
-                            </div>
-                            <div class="step">
-                                <div class="step-number">3</div>
-                                <div>
-                                    <p>Donc a = -21 ÷ 7 = <span class="coefficient-badge">-3</span></p>
-                                    <p>La fonction g est : <strong>g : x → -3x</strong></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Représentation graphique -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">
-                    <i class="fas fa-chart-line"></i>
-                    Représentation graphique
-                </h2>
-
-                <div class="card fade-in">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="fas fa-graph"></i>
-                        </div>
-                        <h3 class="card-title">Propriété fondamentale</h3>
-                    </div>
-                    <p>La représentation graphique d'une fonction linéaire f : x → ax est une <strong>droite passant par l'origine</strong> et d'équation y = ax.</p>
-                </div>
-
-                <div class="graph-container">
-                    <h3>Graphique de f : x → 2x</h3>
-                    <svg class="graph" width="500" height="400" viewBox="0 0 500 400">
-                        <!-- Grille -->
-                        <defs>
-                            <pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse">
-                                <path d="M 25 0 L 0 0 0 25" fill="none" stroke="#e5e7eb" stroke-width="1"/>
-                            </pattern>
-                        </defs>
-                        <rect width="100%" height="100%" fill="url(#grid)" />
-                        
-                        <!-- Axes -->
-                        <line x1="50" y1="350" x2="450" y2="350" stroke="#374151" stroke-width="2"/>
-                        <line x1="250" y1="50" x2="250" y2="350" stroke="#374151" stroke-width="2"/>
-                        
-                        <!-- Flèches -->
-                        <polygon points="450,350 445,345 445,355" fill="#374151"/>
-                        <polygon points="250,50 245,55 255,55" fill="#374151"/>
-                        
-                        <!-- Labels des axes -->
-                        <text x="460" y="355" font-family="Inter" font-size="14" fill="#374151">x</text>
-                        <text x="255" y="45" font-family="Inter" font-size="14" fill="#374151">y</text>
-                        <text x="255" y="370" font-family="Inter" font-size="12" fill="#6b7280">O</text>
-                        
-                        <!-- Droite f(x) = 2x -->
-                        <line x1="200" y1="250" x2="300" y2="150" stroke="#2563eb" stroke-width="3"/>
-                        
-                        <!-- Points remarquables -->
-                        <circle cx="250" cy="350" r="4" fill="#ef4444"/>
-                        <circle cx="275" cy="300" r="4" fill="#ef4444"/>
-                        <circle cx="300" cy="250" r="4" fill="#ef4444"/>
-                        
-                        <!-- Labels des points -->
-                        <text x="255" y="345" font-family="Inter" font-size="12" fill="#ef4444">O(0;0)</text>
-                        <text x="280" y="295" font-family="Inter" font-size="12" fill="#ef4444">A(1;2)</text>
-                        <text x="305" y="245" font-family="Inter" font-size="12" fill="#ef4444">B(2;4)</text>
-                        
-                        <!-- Équation de la droite -->
-                        <text x="320" y="180" font-family="Inter" font-size="16" font-weight="600" fill="#2563eb">y = 2x</text>
-                    </svg>
-                    <p style="margin-top: 1rem; color: var(--text-light);">
-                        La droite passe par l'origine O(0;0) et par le point (1;2)
-                    </p>
-                </div>
-
-                <div class="formula-box">
-                    <div class="formula-content">
-                        <h3>Règle de construction</h3>
-                        <p>Pour construire la représentation graphique d'une fonction linéaire f : x → ax :</p>
-                        <div class="formula">Il suffit de connaître un point (x ; f(x))</div>
-                        <p>Le coefficient <strong>a</strong> est appelé le <strong>coefficient directeur</strong> de la droite</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3><i class="fas fa-graduation-cap"></i> EducastStream</h3>
-                    <p>Plateforme de soutien scolaire en ligne pour réussir vos études de mathématiques.</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Nos cours</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Cours maths 3ème</a></li>
-                        <li><a href="#">Fonctions linéaires</a></li>
-                        <li><a href="#">Géométrie</a></li>
-                        <li><a href="#">Statistiques</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Ressources</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Exercices d'anglais</a></li>
-                        <li><a href="#">Ressources pédagogiques</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Suivez-nous</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
-                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-                        <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2023 Educastream. Tous droits réservés. | Charte Déontologie CPF | <i class="fas fa-award"></i> Certifié Qualiopi</p>
-            </div>
+        <button id="run-simulation">Lancer la Propagation</button>
+        <div class="explanation-box">
+            <h3>Explication :</h3>
+            <p id="explanation-text">
+                Un réseau de neurones apprend en ajustant les "poids" des connexions entre les neurones.
+                Ici, les entrées (I1, I2) sont multipliées par des poids prédéfinis et transmises aux neurones de la couche cachée (H1, H2, H3).
+                Chaque neurone caché calcule une somme pondérée, applique une fonction d'activation (ici, une simple seuil ou sigmoïde simulée visuellement),
+                et transmet son signal à la couche de sortie (O1). Le neurone de sortie fait de même pour produire le résultat final.
+            </p>
         </div>
-    </footer>
+    </div>
 
     <script>
-        // Animation au scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        document.addEventListener('DOMContentLoaded', () => {
+            const input1Slider = document.getElementById('input1');
+            const input2Slider = document.getElementById('input2');
+            const input1ValueDisplay = document.getElementById('input1-value');
+            const input2ValueDisplay = document.getElementById('input2-value');
+            const runButton = document.getElementById('run-simulation');
+            const svg = document.querySelector('.connections-svg');
+            const outputValueDisplay = document.getElementById('output-value');
+            const explanationText = document.getElementById('explanation-text');
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                }
-            });
-        }, observerOptions);
+            // Neurones DOM elements
+            const neurons = {
+                i1: document.getElementById('n-i1'),
+                i2: document.getElementById('n-i2'),
+                h1: document.getElementById('n-h1'),
+                h2: document.getElementById('n-h2'),
+                h3: document.getElementById('n-h3'),
+                o1: document.getElementById('n-o1')
+            };
 
-        document.querySelectorAll('.card').forEach(card => {
-            observer.observe(card);
-        });
+            // Poids simplifiés (valeurs arbitraires pour la démo)
+            const weights = {
+                i1_h1: 0.7, i1_h2: 0.3, i1_h3: 0.9,
+                i2_h1: 0.2, i2_h2: 0.8, i2_h3: 0.5,
+                h1_o1: 0.6, h2_o1: 0.4, h3_o1: 0.7
+            };
 
-        // Smooth scroll pour les liens de navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
+            let connections = {}; // Pour stocker les lignes SVG
+
+            function updateInputValueDisplay() {
+                input1ValueDisplay.textContent = parseFloat(input1Slider.value).toFixed(1);
+                input2ValueDisplay.textContent = parseFloat(input2Slider.value).toFixed(1);
+            }
+
+            function getElementCenter(element) {
+                const rect = element.getBoundingClientRect();
+                const containerRect = svg.getBoundingClientRect(); // Coordonnées relatives au SVG
+                return {
+                    x: rect.left + rect.width / 2 - containerRect.left,
+                    y: rect.top + rect.height / 2 - containerRect.top
+                };
+            }
+
+            function drawConnections() {
+                svg.innerHTML = ''; // Clear previous lines
+                connections = {}; // Reset connections object
+
+                const neuronElements = {
+                    i1: neurons.i1, i2: neurons.i2,
+                    h1: neurons.h1, h2: neurons.h2, h3: neurons.h3,
+                    o1: neurons.o1
+                };
+                
+                const structure = [
+                    { from: ['i1', 'i2'], to: ['h1', 'h2', 'h3'] },
+                    { from: ['h1', 'h2', 'h3'], to: ['o1'] }
+                ];
+
+                structure.forEach(layerConnection => {
+                    layerConnection.from.forEach(fromId => {
+                        layerConnection.to.forEach(toId => {
+                            const fromNeuron = neuronElements[fromId];
+                            const toNeuron = neuronElements[toId];
+                            const start = getElementCenter(fromNeuron);
+                            const end = getElementCenter(toNeuron);
+
+                            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                            line.setAttribute('x1', start.x);
+                            line.setAttribute('y1', start.y);
+                            line.setAttribute('x2', end.x);
+                            line.setAttribute('y2', end.y);
+                            
+                            // Style basé sur le poids (simplifié)
+                            const weightKey = `${fromId}_${toId}`;
+                            const weight = weights[weightKey] || 0.5; // default weight if not defined
+                            line.style.strokeWidth = 1 + weight * 3; // Epaisseur de 1 à 4
+                            
+                            svg.appendChild(line);
+                            connections[`${fromId}-${toId}`] = line;
+                        });
                     });
-                }
-            });
-        });
+                });
+            }
 
-        // Animation des coefficients
-        document.querySelectorAll('.coefficient-badge').forEach(badge => {
-            badge.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.1)';
-                this.style.transition = 'transform 0.3s ease';
-            });
+            // Fonction d'activation (Sigmoid simplifiée pour l'effet)
+            function sigmoid(x) {
+                return 1 / (1 + Math.exp(-x));
+            }
             
-            badge.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
+            // Animation séquentielle
+            async function animatePropagation(inputValues, hiddenValues, outputValue) {
+                // Reset states
+                Object.values(neurons).forEach(n => n.classList.remove('active', 'processing'));
+                Object.values(connections).forEach(c => c.classList.remove('active'));
+                outputValueDisplay.textContent = "?";
+                runButton.disabled = true; // Désactiver le bouton pendant l'animation
+
+                explanationText.textContent = "Les valeurs d'entrée sont définies...";
+                await sleep(500);
+
+                // 1. Activer les neurones d'entrée
+                if (inputValues.i1 > 0.05) neurons.i1.classList.add('active'); // Activer si valeur non négligeable
+                if (inputValues.i2 > 0.05) neurons.i2.classList.add('active');
+                explanationText.textContent = `Entrée 1: ${inputValues.i1.toFixed(2)}, Entrée 2: ${inputValues.i2.toFixed(2)}. Les signaux se propagent vers la couche cachée.`;
+                await sleep(800);
+
+                // 2. Activer les connexions vers la couche cachée et neurones cachés
+                const hiddenActivationPromises = [];
+                ['h1', 'h2', 'h3'].forEach((hId, index) => {
+                    const activateHidden = async () => {
+                        await sleep(index * 200); // Délai staggered
+                        
+                        let activatedConnection = false;
+                        if (inputValues.i1 * weights[`i1_${hId}`] > 0.01 && connections[`i1-${hId}`]) { // Connexion active si l'input pondéré est significatif
+                           connections[`i1-${hId}`].classList.add('active');
+                           activatedConnection = true;
+                        }
+                        if (inputValues.i2 * weights[`i2_${hId}`] > 0.01 && connections[`i2-${hId}`]) {
+                           connections[`i2-${hId}`].classList.add('active');
+                           activatedConnection = true;
+                        }
+                        
+                        if (activatedConnection || hiddenValues[hId] > 0.1) { // Si une connexion est active ou si le neurone a une valeur
+                            neurons[hId].classList.add('processing');
+                            explanationText.textContent = `Le neurone ${hId.toUpperCase()} calcule sa valeur... (activ.: ${hiddenValues[hId].toFixed(2)})`;
+                            await sleep(500);
+                            neurons[hId].classList.remove('processing');
+                            if (hiddenValues[hId] > 0.3) { // Seuil arbitraire pour l'activation visuelle
+                                neurons[hId].classList.add('active');
+                            }
+                        }
+                    };
+                    hiddenActivationPromises.push(activateHidden());
+                });
+                await Promise.all(hiddenActivationPromises);
+                
+                explanationText.textContent = "Les neurones cachés ont traité les signaux. Propagation vers la sortie...";
+                await sleep(800);
+
+                // 3. Activer les connexions vers la couche de sortie et neurone de sortie
+                const outputActivationPromises = [];
+                let outputWillProcess = false;
+                ['h1', 'h2', 'h3'].forEach((hId, index) => {
+                     const activateOutputConn = async () => {
+                        await sleep(index * 150);
+                        if (hiddenValues[hId] * weights[`${hId}_o1`] > 0.01 && connections[`${hId}-o1`]) {
+                           connections[`${hId}-o1`].classList.add('active');
+                           outputWillProcess = true;
+                        }
+                     }
+                     outputActivationPromises.push(activateOutputConn());
+                });
+                await Promise.all(outputActivationPromises);
+                
+                if(outputWillProcess || outputValue > 0.1){
+                    neurons.o1.classList.add('processing');
+                    explanationText.textContent = `Le neurone de sortie O1 calcule la valeur finale... (activ.: ${outputValue.toFixed(2)})`;
+                    await sleep(800);
+                    neurons.o1.classList.remove('processing');
+                    if (outputValue > 0.4) { // Seuil arbitraire
+                        neurons.o1.classList.add('active');
+                    }
+                }
+                outputValueDisplay.textContent = outputValue.toFixed(3);
+                explanationText.textContent = `Propagation terminée ! Sortie finale : ${outputValue.toFixed(3)}. Vous pouvez changer les entrées et relancer.`;
+                runButton.disabled = false; // Réactiver le bouton
+            }
+            
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            function runSimulation() {
+                if (runButton.disabled) return; // Empêcher les clics multiples rapides
+
+                const i1_val = parseFloat(input1Slider.value);
+                const i2_val = parseFloat(input2Slider.value);
+
+                // Calcul couche cachée (simple somme pondérée)
+                const h1_val_raw = (i1_val * weights.i1_h1) + (i2_val * weights.i2_h1);
+                const h2_val_raw = (i1_val * weights.i1_h2) + (i2_val * weights.i2_h2);
+                const h3_val_raw = (i1_val * weights.i1_h3) + (i2_val * weights.i2_h3);
+
+                // Application fonction d'activation (Sigmoid pour avoir des valeurs entre 0 et 1)
+                // Le "- 0.8" simule un seuil/biais pour que les neurones ne s'activent pas trop facilement
+                const h1_val_activated = sigmoid(h1_val_raw - 0.8); 
+                const h2_val_activated = sigmoid(h2_val_raw - 0.8);
+                const h3_val_activated = sigmoid(h3_val_raw - 0.8);
+
+                // Calcul couche de sortie
+                const o1_val_raw = (h1_val_activated * weights.h1_o1) + 
+                                   (h2_val_activated * weights.h2_o1) + 
+                                   (h3_val_activated * weights.h3_o1);
+                
+                const o1_val_activated = sigmoid(o1_val_raw - 0.6); // Biais pour la sortie
+
+                const inputValues = { i1: i1_val, i2: i2_val };
+                const hiddenValues = { h1: h1_val_activated, h2: h2_val_activated, h3: h3_val_activated };
+                
+                animatePropagation(inputValues, hiddenValues, o1_val_activated);
+            }
+
+            // Écouteurs d'événements
+            input1Slider.addEventListener('input', updateInputValueDisplay);
+            input2Slider.addEventListener('input', updateInputValueDisplay);
+            runButton.addEventListener('click', runSimulation);
+
+            // Initialisation
+            updateInputValueDisplay();
+            drawConnections(); // Dessiner les connexions au chargement
+
+            // Redessiner les connexions si la fenêtre est redimensionnée
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    drawConnections();
+                     // Optionnel: si une simulation était en cours, on pourrait l'interrompre ou la relancer
+                     // Pour la simplicité, on ne fait que redessiner.
+                }, 150); // Debounce pour éviter trop d'appels
             });
+
+            // Lancer une première simulation "douce" pour montrer le fonctionnement
+            setTimeout(() => {
+              if (confirm("Bienvenue ! Voulez-vous lancer une démonstration automatique pour voir comment ça marche ?")) {
+                // Mettre des valeurs initiales pour une démo plus parlante
+                input1Slider.value = "0.7";
+                input2Slider.value = "0.4";
+                updateInputValueDisplay();
+                runSimulation();
+              } else {
+                explanationText.textContent = "Ajustez les curseurs d'entrée (I1, I2) puis cliquez sur 'Lancer la Propagation' pour voir le réseau en action. Les nombres à côté des curseurs indiquent leur valeur actuelle. Les lignes plus épaisses entre les neurones représentent des 'poids' plus importants dans le calcul.";
+              }
+            }, 500);
         });
     </script>
 </body>
